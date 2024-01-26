@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots()
+ax.set_title("SUDOKU", fontsize=20)
+plt.grid()
+ax.set_xlim(1, 10)
+ax.set_ylim(1, 10)
+ax.tick_params(axis='both', which='both', length=0)
+ax.set_xticklabels([])
+ax.set_yticklabels([])
+
+plt.axvline(x=4, color='grey', linewidth=2, linestyle='-')
+plt.axvline(x=7, color='grey', linewidth=2, linestyle='-')
+plt.axhline(y=4, color='grey', linewidth=2, linestyle='-')
+plt.axhline(y=7, color='grey', linewidth=2, linestyle='-')
+
+gitter_groesse = 9
+
+X_Zahlen, Y_Zahlen = np.meshgrid(np.arange(1.5, gitter_groesse + 1.5), np.arange(1.5, gitter_groesse + 1.5))
+
+plt.scatter(X_Zahlen, Y_Zahlen, s=0)
+
+for i in range(gitter_groesse):
+    for j in range(gitter_groesse):
+        x = X_Zahlen[i, j]
+        y = Y_Zahlen[i, j]
+        plt.text(x, y, str(int(x - 0.5)), ha='center', va='center', color="black", fontsize=20)
+
+
+plt.show()
