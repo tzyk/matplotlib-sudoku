@@ -1,5 +1,6 @@
-import numpy as np
+
 import matplotlib.pyplot as plt
+from random import sample
 
 fig, ax = plt.subplots()
 ax.set_title("SUDOKU", fontsize=20)
@@ -15,17 +16,31 @@ plt.axvline(x=7, color='grey', linewidth=2, linestyle='-')
 plt.axhline(y=4, color='grey', linewidth=2, linestyle='-')
 plt.axhline(y=7, color='grey', linewidth=2, linestyle='-')
 
-gitter_groesse = 9
+base = 3
+side = base*base
 
-X_Zahlen, Y_Zahlen = np.meshgrid(np.arange(1.5, gitter_groesse + 1.5), np.arange(1.5, gitter_groesse + 1.5))
 
-plt.scatter(X_Zahlen, Y_Zahlen, s=0)
+def pattern(x, y): return(base*(x % base)+x//base+y) % side
 
-for i in range(gitter_groesse):
-    for j in range(gitter_groesse):
-        x = X_Zahlen[i, j]
-        y = Y_Zahlen[i, j]
-        plt.text(x, y, str(int(x - 0.5)), ha='center', va='center', color="black", fontsize=20)
+
+def shuffle(s): return sample(s, len(s))
+
+
+rBase = range(base)
+rows = [g*base + r for g in shuffle(rBase) for r in shuffle(rBase)]
+cols = [g*base + c for g in shuffle(rBase) for c in shuffle(rBase)]
+nums = shuffle(range(1, base*base+1))
+
+board = [[nums[pattern(r, c)] for c in cols] for r in rows]
+
+squares = side*side
+empties = squares * 3//4
+for p in sample(range(squares), empties):
+    board[p//side][p % side] = ""
+
+for i in range(side):
+    for j in range(side):
+        ax.text(j + 1.5, i + 1.5, str(board[i][j]), ha='center', va='center', color="black", fontsize=20)
 
 
 plt.show()
